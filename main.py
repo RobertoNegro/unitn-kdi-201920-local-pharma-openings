@@ -68,8 +68,8 @@ def get_names_and_timestamps(url, date):
         province = ''
         for j, string in enumerate(dom_address.stripped_strings):
             if not re.search(r"(.*\s)?Tel\..*", string):
-                address_fraction_match = re.search(r"(\w+) - (\w+) \((\w+)\)", string)
-                address_match = re.search(r"(\w+) \((\w+)\)", string)
+                address_fraction_match = re.search(r"([^-]+)-([^(]+)\(([^)]+)\)", string)
+                address_match = re.search(r"([^(]+)\(([^)]+)\)", string)
                 if address_fraction_match is not None:
                     fraction = address_fraction_match.group(1)
                     city = address_fraction_match.group(2)
@@ -80,10 +80,10 @@ def get_names_and_timestamps(url, date):
                         province = address_match.group(2)
                     else:
                         address = string
-        result_list[i]['address'] = address
-        result_list[i]['fraction'] = fraction
-        result_list[i]['city'] = city
-        result_list[i]['province'] = province
+        result_list[i]['address'] = address.strip()
+        result_list[i]['fraction'] = fraction.strip()
+        result_list[i]['city'] = city.strip()
+        result_list[i]['province'] = province.strip()
 
         id = get_drugstore_id(result_list[i])
 
